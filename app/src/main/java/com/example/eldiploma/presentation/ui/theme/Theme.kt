@@ -1,4 +1,4 @@
-package com.example.eldiploma.ui.theme
+package com.example.eldiploma.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
