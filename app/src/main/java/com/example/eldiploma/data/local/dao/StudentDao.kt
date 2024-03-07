@@ -16,6 +16,9 @@ interface StudentDao {
     @Upsert
     suspend fun addStudent(studentDbModel: StudentDbModel)
 
+    @Upsert
+    suspend fun addStudents(studentDbModel: List<StudentDbModel>)
+
     @Query("SELECT * FROM students WHERE name LIKE :search OR lastname LIKE :search")
     fun getStudentByName(search: String): Flow<List<StudentDbModel>>
 }

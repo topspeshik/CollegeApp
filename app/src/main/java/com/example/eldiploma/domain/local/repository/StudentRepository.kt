@@ -7,9 +7,9 @@ interface StudentRepository {
 
     fun getStudents(): Flow<List<Student>>
 
-
     suspend fun addStudent(student: Student)
 
+    suspend fun addStudents(students: List<Student>)
 
     fun getStudentByName(search: String): Flow<List<Student>>
 }

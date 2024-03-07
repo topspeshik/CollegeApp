@@ -9,7 +9,7 @@ import com.example.eldiploma.presentation.students.StudentStore.Intent
 import com.example.eldiploma.presentation.students.StudentStore.Label
 import com.example.eldiploma.presentation.students.StudentStore.State
 
-internal interface StudentStore : Store<Intent, State, Label> {
+interface StudentStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
     }

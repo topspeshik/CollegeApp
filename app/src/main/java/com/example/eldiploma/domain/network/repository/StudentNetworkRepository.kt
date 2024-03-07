@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface StudentNetworkRepository {
 
-    suspend fun getStudents(): List<Student>
+    suspend fun getStudents(ids: String): List<Student>
 
     suspend fun addStudent(student: Student)
 

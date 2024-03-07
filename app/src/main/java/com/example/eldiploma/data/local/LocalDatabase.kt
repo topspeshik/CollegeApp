@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.eldiploma.data.local.dao.GroupDao
 import com.example.eldiploma.data.local.dao.StudentDao
+import com.example.eldiploma.data.local.dao.StudentGroupDao
 import com.example.eldiploma.data.local.model.AttendanceDbModel
 import com.example.eldiploma.data.local.model.GroupDbModel
 import com.example.eldiploma.data.local.model.MeetingDbModel
@@ -26,6 +28,8 @@ abstract class LocalDatabase : RoomDatabase(){
 
 
     abstract fun studentDao(): StudentDao
+    abstract fun studentGroupDao(): StudentGroupDao
+    abstract fun groupDao(): GroupDao
 
     companion object {
 

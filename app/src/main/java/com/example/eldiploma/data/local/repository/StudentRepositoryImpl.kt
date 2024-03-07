@@ -17,6 +17,8 @@ class StudentRepositoryImpl @Inject constructor(
 
     override suspend fun addStudent(student: Student) = studentDao.addStudent(student.toDbModel())
 
+    override suspend fun addStudents(students: List<Student>) = studentDao.addStudents(students.map{it.toDbModel()} )
+
     override fun getStudentByName(search: String): Flow<List<Student>> = studentDao.getStudentByName(search)
         .map{it.toEntities()}
 }

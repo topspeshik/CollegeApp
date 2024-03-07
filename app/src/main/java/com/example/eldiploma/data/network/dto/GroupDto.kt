@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GroupDto (
     @SerializedName("id")
-    val id: String?,
+    val id: String,
     @SerializedName("firstName")
     val name: String?,
     @SerializedName("leadId")

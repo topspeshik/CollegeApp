@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 data class StudentGroupDto(
     @SerializedName("id")
-    val id: String?,
+    val id: String,
 
     @SerializedName("contactId")
-    val studentId: String?,
+    val studentId: String,
 
     @SerializedName("contactName")
     val name: String?,

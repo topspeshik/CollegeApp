@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetStudentsNetworkUseCase @Inject constructor(
     private val repository: StudentNetworkRepository
 ) {
-    suspend operator fun invoke() = repository.getStudents()
+    suspend operator fun invoke(ids: String) = repository.getStudents(ids)
 }
