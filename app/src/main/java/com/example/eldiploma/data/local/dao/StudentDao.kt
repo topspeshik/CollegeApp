@@ -1,7 +1,6 @@
 package com.example.eldiploma.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.eldiploma.data.local.model.StudentDbModel
@@ -20,5 +19,5 @@ interface StudentDao {
     suspend fun addStudents(studentDbModel: List<StudentDbModel>)
 
     @Query("SELECT * FROM students WHERE name LIKE :search OR lastname LIKE :search")
-    fun getStudentByName(search: String): Flow<List<StudentDbModel>>
+    suspend fun getStudentsByName(search: String): List<StudentDbModel>
 }

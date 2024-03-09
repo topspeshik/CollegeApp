@@ -11,5 +11,5 @@ interface StudentRepository {
 
     suspend fun addStudents(students: List<Student>)
 
-    fun getStudentByName(search: String): Flow<List<Student>>
+    suspend fun getStudentsByName(search: String): List<Student>
 }
