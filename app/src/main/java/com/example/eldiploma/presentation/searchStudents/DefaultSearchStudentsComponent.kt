@@ -6,6 +6,8 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.example.eldiploma.domain.entity.Student
 import com.example.eldiploma.presentation.extenstions.componentScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -14,10 +16,10 @@ import javax.inject.Inject
 
 class DefaultSearchStudentsComponent @Inject constructor(
     private val storeFactory: SearchStudentsStoreFactory,
-    private val onBackClicked: ()->Unit,
-    private val onStudentClicked: (Student)->Unit,
-    componentContext: ComponentContext
-) : SearchStudentsComponent, ComponentContext by componentContext{
+    @Assisted private val onBackClicked: () -> Unit,
+    @Assisted private val onStudentClicked: (Student) -> Unit,
+    @Assisted componentContext: ComponentContext
+) : SearchStudentsComponent, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore { storeFactory.create() }
     private val scope = componentScope()
@@ -25,8 +27,8 @@ class DefaultSearchStudentsComponent @Inject constructor(
 
     init {
         scope.launch {
-            store.labels.collect{
-                when(it){
+            store.labels.collect {
+                when (it) {
                     SearchStudentsStore.Label.ClickBack -> onBackClicked()
                     is SearchStudentsStore.Label.OpenStudent -> onStudentClicked(it.student)
                 }
@@ -56,4 +58,13 @@ class DefaultSearchStudentsComponent @Inject constructor(
     }
 
 
+    @AssistedFactory
+    interface Factory {
+
+        fun create(
+            @Assisted onBackClicked: () -> Unit,
+            @Assisted onStudentClicked: (Student) -> Unit,
+            @Assisted componentContext: ComponentContext
+        ): DefaultSearchStudentsComponent
+    }
 }
