@@ -1,5 +1,6 @@
 package com.example.eldiploma.presentation
 
+import android.app.AppComponentFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -12,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.arkivanov.decompose.defaultComponentContext
+import com.example.eldiploma.MainApp
 import com.example.eldiploma.data.local.LocalDatabase
 import com.example.eldiploma.data.local.repository.GroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentGroupRepositoryImpl
@@ -31,16 +34,23 @@ import com.example.eldiploma.domain.local.usecase.GetStudentsUseCase
 import com.example.eldiploma.domain.network.usecase.GetGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentsNetworkUseCase
+import com.example.eldiploma.presentation.root.DefaultRootComponent
+import com.example.eldiploma.presentation.root.RootContent
 import com.example.eldiploma.presentation.ui.theme.ElDiplomaTheme
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var rootComponentFactory: DefaultRootComponent.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        (applicationContext as MainApp).applicationComponent.inject(this)
             lifecycleScope.launch {
 
                 val requestParamsForGroup = AccountRequestParams(
@@ -93,15 +103,7 @@ class MainActivity : ComponentActivity() {
             }
 
             setContent {
-            ElDiplomaTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            RootContent(component = rootComponentFactory.create(defaultComponentContext()))
         }
     }
 }
