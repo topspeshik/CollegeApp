@@ -8,13 +8,14 @@ import com.example.eldiploma.domain.entity.Student
 import com.example.eldiploma.presentation.extenstions.componentScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DefaultSearchStudentsComponent @Inject constructor(
+class DefaultSearchStudentsComponent @AssistedInject constructor(
     private val storeFactory: SearchStudentsStoreFactory,
     @Assisted private val onBackClicked: () -> Unit,
     @Assisted private val onStudentClicked: (Student) -> Unit,

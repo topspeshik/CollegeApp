@@ -10,13 +10,14 @@ import com.example.eldiploma.presentation.extenstions.componentScope
 import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DefaultStudentsComponent @Inject constructor(
+class DefaultStudentsComponent @AssistedInject constructor(
     private val studentStoreFactory: StudentStoreFactory,
     @Assisted private val onSearchClicked: () -> Unit,
     @Assisted private val onStudentClicked: (StudentGroup) -> Unit,
@@ -60,6 +61,6 @@ class DefaultStudentsComponent @Inject constructor(
             @Assisted onSearchClicked: () -> Unit,
             @Assisted onStudentClicked: (StudentGroup) -> Unit,
             @Assisted componentContext: ComponentContext
-        ): DefaultSearchStudentsComponent
+        ): DefaultStudentsComponent
     }
 }
