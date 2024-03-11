@@ -1,6 +1,5 @@
 package com.example.eldiploma.presentation.root
 
-import android.app.AppComponentFactory
 import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -9,15 +8,12 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
-import com.example.eldiploma.domain.entity.Student
 import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
 import com.example.eldiploma.presentation.students.DefaultStudentsComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.parcelize.Parcelize
-import java.util.Stack
-import javax.inject.Inject
 
 class DefaultRootComponent @AssistedInject constructor(
     private val studentsComponentFactory: DefaultStudentsComponent.Factory,
@@ -77,6 +73,7 @@ class DefaultRootComponent @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory{
+
         fun create(
             @Assisted componentContext: ComponentContext
         ) : DefaultRootComponent
