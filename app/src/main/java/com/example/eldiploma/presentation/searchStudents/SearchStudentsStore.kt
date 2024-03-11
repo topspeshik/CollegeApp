@@ -1,11 +1,14 @@
 package com.example.eldiploma.presentation.searchStudents
 
+import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.eldiploma.domain.entity.Student
+import com.example.eldiploma.domain.entity.StudentGroup
+import com.example.eldiploma.domain.local.usecase.GetStudentGroupsByNameUseCase
 import com.example.eldiploma.domain.local.usecase.GetStudentsByName
 import com.example.eldiploma.presentation.searchStudents.SearchStudentsStore.Intent
 import com.example.eldiploma.presentation.searchStudents.SearchStudentsStore.Label
@@ -24,7 +27,7 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
 
         data object ClickSearch: Intent
 
-        data class ClickStudent(val student: Student): Intent
+        data class ClickStudent(val studentGroup: StudentGroup): Intent
     }
 
     data class State(
@@ -40,7 +43,7 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
             data object Loading: SearchState
 
 
-            data class SuccessLoaded(val students: List<Student>): SearchState
+            data class SuccessLoaded(val students: List<StudentGroup>): SearchState
         }
     }
 
@@ -48,13 +51,13 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
 
         data object ClickBack: Label
 
-        data class OpenStudent(val student: Student): Label
+        data class OpenStudent(val studentGroup: StudentGroup): Label
     }
 }
 
  class SearchStudentsStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory,
-    private val getStudentsByName: GetStudentsByName
+    private val getStudentsByName: GetStudentGroupsByNameUseCase
 ) {
 
     fun create(): SearchStudentsStore =
@@ -77,7 +80,7 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
 
         data object LoadingSearchResult: Msg
 
-        data class SearchResultLoaded(val students: List<Student>) : Msg
+        data class SearchResultLoaded(val students: List<StudentGroup>) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -100,13 +103,14 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
                     searchJob?.cancel()
                     searchJob = scope.launch {
                         dispatch(Msg.LoadingSearchResult)
+                        Log.d("searCHqUQRRT", getState().searchQuery)
                         val students = getStudentsByName(getState().searchQuery)
                         dispatch(Msg.SearchResultLoaded(students))
                     }
 
                 }
                 is Intent.ClickStudent -> {
-                    publish(Label.OpenStudent(intent.student))
+                    publish(Label.OpenStudent(intent.studentGroup))
                 }
             }
         }

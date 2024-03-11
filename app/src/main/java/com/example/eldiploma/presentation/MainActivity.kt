@@ -42,54 +42,65 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         (applicationContext as MainApp).applicationComponent.inject(this)
         lifecycleScope.launch {
-
-            val requestParamsForGroup = AccountRequestParams(
-                where = listOf(
-                    WhereCondition(
-                        type = "equals",
-                        attribute = "leadId",
-                        value = listOf("65e1817fa60499374")
+            try {
+                val requestParamsForGroup = AccountRequestParams(
+                    where = listOf(
+                        WhereCondition(
+                            type = "equals",
+                            attribute = "leadId",
+                            value = listOf("65e1817fa60499374")
+                        )
                     )
                 )
-            )
 
-            val repository2 = GroupNetworkRepositoryImpl(ApiFactory.apiService)
-            val groups2 = GetGroupNetworkUseCase(repository2).invoke(Gson().toJson(requestParamsForGroup))
-            val repositoryLocal2 = GroupRepositoryImpl(LocalDatabase.getInstance(applicationContext).groupDao())
-            AddGroupsUseCase(repositoryLocal2).invoke(groups2)
+                val repository2 = GroupNetworkRepositoryImpl(ApiFactory.apiService)
+                val groups2 =
+                    GetGroupNetworkUseCase(repository2).invoke(Gson().toJson(requestParamsForGroup))
+                val repositoryLocal2 =
+                    GroupRepositoryImpl(LocalDatabase.getInstance(applicationContext).groupDao())
+                AddGroupsUseCase(repositoryLocal2).invoke(groups2)
 
-            val groupsIds = groups2.map{it.id}
-            val requestParamsForStudentGroup = AccountRequestParams(
-                where = listOf(
-                    WhereCondition(
-                        type = "equals",
-                        attribute = "groupId",
-                        value = groupsIds
+                val groupsIds = groups2.map { it.id }
+                val requestParamsForStudentGroup = AccountRequestParams(
+                    where = listOf(
+                        WhereCondition(
+                            type = "equals",
+                            attribute = "groupId",
+                            value = groupsIds
+                        )
                     )
                 )
-            )
-            val repository = StudentGroupNetworkRepositoryImpl(ApiFactory.apiService)
-            val studentGroups = GetStudentGroupNetworkUseCase(repository).invoke(Gson().toJson(requestParamsForStudentGroup))
-            val studentsIds = studentGroups.map{it.studentId}
+                val repository = StudentGroupNetworkRepositoryImpl(ApiFactory.apiService)
+                val studentGroups = GetStudentGroupNetworkUseCase(repository).invoke(
+                    Gson().toJson(requestParamsForStudentGroup)
+                )
+                val studentsIds = studentGroups.map { it.studentId }
 
 
-            val requestParamsForStudents = AccountRequestParams(
-                where = listOf(
-                    WhereCondition(
-                        type = "equals",
-                        attribute = "id",
-                        value = studentsIds
+                val requestParamsForStudents = AccountRequestParams(
+                    where = listOf(
+                        WhereCondition(
+                            type = "equals",
+                            attribute = "id",
+                            value = studentsIds
+                        )
                     )
                 )
-            )
-            val repository1 = StudentNetworkRepositoryImpl(ApiFactory.apiService)
-            val students1 = GetStudentsNetworkUseCase(repository1).invoke(Gson().toJson(requestParamsForStudents))
-            val repositoryLocal1 = StudentRepositoryImpl(LocalDatabase.getInstance(applicationContext).studentDao())
-            AddStudentsUseCase(repositoryLocal1).invoke(students1)
+                val repository1 = StudentNetworkRepositoryImpl(ApiFactory.apiService)
+                val students1 = GetStudentsNetworkUseCase(repository1).invoke(
+                    Gson().toJson(requestParamsForStudents)
+                )
+                val repositoryLocal1 = StudentRepositoryImpl(
+                    LocalDatabase.getInstance(applicationContext).studentDao()
+                )
+                AddStudentsUseCase(repositoryLocal1).invoke(students1)
 
-            val repositoryLocal = StudentGroupRepositoryImpl(LocalDatabase.getInstance(applicationContext).studentGroupDao())
-            AddStudentGroupsUseCase(repositoryLocal).invoke(studentGroups)
-
+                val repositoryLocal = StudentGroupRepositoryImpl(
+                    LocalDatabase.getInstance(applicationContext).studentGroupDao()
+                )
+                AddStudentGroupsUseCase(repositoryLocal).invoke(studentGroups)
+            }
+            catch (e: Exception){}
         }
 
         setContent {

@@ -5,6 +5,7 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.example.eldiploma.domain.entity.Student
+import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.presentation.extenstions.componentScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class DefaultSearchStudentsComponent @AssistedInject constructor(
     private val storeFactory: SearchStudentsStoreFactory,
     @Assisted private val onBackClicked: () -> Unit,
-    @Assisted private val onStudentClicked: (Student) -> Unit,
+    @Assisted private val onStudentClicked: (StudentGroup) -> Unit,
     @Assisted componentContext: ComponentContext
 ) : SearchStudentsComponent, ComponentContext by componentContext {
 
@@ -31,7 +32,7 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
             store.labels.collect {
                 when (it) {
                     SearchStudentsStore.Label.ClickBack -> onBackClicked()
-                    is SearchStudentsStore.Label.OpenStudent -> onStudentClicked(it.student)
+                    is SearchStudentsStore.Label.OpenStudent -> onStudentClicked(it.studentGroup)
                 }
             }
         }
@@ -53,8 +54,8 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
 
     }
 
-    override fun onStudentClick(student: Student) {
-        store.accept(SearchStudentsStore.Intent.ClickStudent(student))
+    override fun onStudentClick(studentGroup: StudentGroup) {
+        store.accept(SearchStudentsStore.Intent.ClickStudent(studentGroup))
 
     }
 
@@ -64,7 +65,7 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
 
         fun create(
             @Assisted onBackClicked: () -> Unit,
-            @Assisted onStudentClicked: (Student) -> Unit,
+            @Assisted onStudentClicked: (StudentGroup) -> Unit,
             @Assisted componentContext: ComponentContext
         ): DefaultSearchStudentsComponent
     }

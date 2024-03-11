@@ -12,7 +12,7 @@ fun RootContent(component: RootComponent) {
         Children(stack = component.stack) {
             when(val instance = it.instance){
                 is RootComponent.Child.SearchStudents -> {
-                    SearchStudentsContent(searchStudentsComponent = instance.component)
+                    SearchStudentsContent(component = instance.component)
                 }
                 is RootComponent.Child.Students -> {
                     StudentsContent(component = instance.component)

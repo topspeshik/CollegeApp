@@ -1,6 +1,7 @@
 package com.example.eldiploma.presentation.searchStudents
 
 import com.example.eldiploma.domain.entity.Student
+import com.example.eldiploma.domain.entity.StudentGroup
 import kotlinx.coroutines.flow.StateFlow
 
 interface SearchStudentsComponent {
@@ -13,5 +14,5 @@ interface SearchStudentsComponent {
 
     fun onClickSearch()
 
-    fun onStudentClick(student: Student)
+    fun onStudentClick(studentGroup: StudentGroup)
 }

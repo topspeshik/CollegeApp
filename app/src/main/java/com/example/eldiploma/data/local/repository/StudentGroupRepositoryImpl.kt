@@ -4,6 +4,7 @@ import com.example.eldiploma.data.local.dao.StudentDao
 import com.example.eldiploma.data.local.dao.StudentGroupDao
 import com.example.eldiploma.data.mapper.toDbModel
 import com.example.eldiploma.data.mapper.toEntities
+import com.example.eldiploma.data.mapper.toEntity
 import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.domain.local.repository.StudentGroupRepository
 import kotlinx.coroutines.flow.Flow
@@ -23,5 +24,10 @@ class StudentGroupRepositoryImpl @Inject constructor(
 
     override suspend fun addStudentGroups(studentGroups: List<StudentGroup>) {
         studentGroupDao.addStudentGroups(studentGroups.map{it.toDbModel()})
+    }
+
+    override suspend fun getStudentGroupsByName(search: String): List<StudentGroup> {
+        return studentGroupDao.getStudentGroupsByName(search).map { it.toEntity() }
+
     }
 }
