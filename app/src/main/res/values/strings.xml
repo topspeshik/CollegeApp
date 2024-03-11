@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">El Diploma</string>
+    <string name="searchStudents">Поиск учеников</string>
 </resources>
