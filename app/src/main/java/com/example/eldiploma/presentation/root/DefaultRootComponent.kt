@@ -8,6 +8,10 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.presentation.classbook.ClassbookComponent
+import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
+import com.example.eldiploma.presentation.pagesClassbook.DefaultPagesClassbookComponent
+import com.example.eldiploma.presentation.profile.DefaultProfileComponent
 import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
 import com.example.eldiploma.presentation.students.DefaultStudentsComponent
 import dagger.assisted.Assisted
@@ -16,15 +20,14 @@ import dagger.assisted.AssistedInject
 import kotlinx.parcelize.Parcelize
 
 class DefaultRootComponent @AssistedInject constructor(
-    private val studentsComponentFactory: DefaultStudentsComponent.Factory,
-    private val searchStudentsComponentFactory: DefaultSearchStudentsComponent.Factory,
+    private val pagesFactoryComponent: DefaultPagesClassbookComponent.Factory,
     @Assisted componentContext: ComponentContext
 ) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
-        initialConfiguration = Config.Students,
+        initialConfiguration = Config.Classbook,
         handleBackButton = true,
         childFactory = ::child
     )
@@ -34,29 +37,13 @@ class DefaultRootComponent @AssistedInject constructor(
         componentContext: ComponentContext
     ): RootComponent.Child{
         return when(config){
-            Config.SearchStudents -> {
-                val component = searchStudentsComponentFactory.create(
-                    onBackClicked = {
-                        navigation.pop()
-                    },
-                    onStudentClicked = {
-
-                    },
-                    componentContext = componentContext
-                )
-                RootComponent.Child.SearchStudents(component)
+            Config.Profile -> {
+                val component = DefaultProfileComponent(componentContext)
+                RootComponent.Child.Profile(component)
             }
-            Config.Students -> {
-                val component = studentsComponentFactory.create(
-                    onSearchClicked = {
-                        navigation.push(Config.SearchStudents)
-                    },
-                    onStudentClicked = {
-
-                    },
-                    componentContext = componentContext
-                )
-                RootComponent.Child.Students(component)
+            Config.Classbook -> {
+                val component = pagesFactoryComponent.create(componentContext)
+                RootComponent.Child.Pages(component)
             }
         }
 
@@ -65,9 +52,9 @@ class DefaultRootComponent @AssistedInject constructor(
     sealed interface Config: Parcelable {
 
         @Parcelize
-        data object Students: Config
+        data object Profile: Config
         @Parcelize
-        data object SearchStudents: Config
+        data object Classbook: Config
 
     }
 

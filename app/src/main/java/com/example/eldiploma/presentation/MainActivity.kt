@@ -3,11 +3,8 @@ package com.example.eldiploma.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.example.eldiploma.MainApp
 import com.example.eldiploma.data.local.LocalDatabase
 import com.example.eldiploma.data.local.repository.GroupRepositoryImpl
@@ -25,10 +22,10 @@ import com.example.eldiploma.domain.local.usecase.AddStudentsUseCase
 import com.example.eldiploma.domain.network.usecase.GetGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentsNetworkUseCase
+import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
+import com.example.eldiploma.presentation.classbook.ClassbookContent
 import com.example.eldiploma.presentation.root.DefaultRootComponent
-import com.example.eldiploma.presentation.root.RootComponent
 import com.example.eldiploma.presentation.root.RootContent
-import com.example.eldiploma.presentation.students.StudentsContent
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import javax.inject.Inject

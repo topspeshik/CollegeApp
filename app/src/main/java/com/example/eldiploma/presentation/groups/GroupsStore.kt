@@ -1,32 +1,32 @@
-package com.example.eldiploma.presentation.root
+package com.example.eldiploma.presentation.groups
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.example.eldiploma.presentation.root.RootStore.Intent
-import com.example.eldiploma.presentation.root.RootStore.Label
-import com.example.eldiploma.presentation.root.RootStore.State
+import com.example.eldiploma.presentation.attendance.AttendanceStore.Intent
+import com.example.eldiploma.presentation.attendance.AttendanceStore.Label
+import com.example.eldiploma.presentation.attendance.AttendanceStore.State
 
-internal interface RootStore : Store<Intent, State, Label> {
+internal interface GroupsStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
     }
 
-    data class State(val todo: Unit)
+    data class State(val todo : Unit)
 
     sealed interface Label {
     }
 }
 
-internal class RootStoreFactory(
+internal class AttendanceStoreFactory(
     private val storeFactory: StoreFactory
 ) {
 
-    fun create(): RootStore =
-        object : RootStore, Store<Intent, State, Label> by storeFactory.create(
-            name = "RootStore",
+    fun create(): GroupsStore =
+        object : GroupsStore, Store<Intent, State, Label> by storeFactory.create(
+            name = "GroupsStore",
             initialState = State(Unit),
             bootstrapper = BootstrapperImpl(),
             executorFactory = ::ExecutorImpl,
