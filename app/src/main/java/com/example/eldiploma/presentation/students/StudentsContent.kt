@@ -56,9 +56,9 @@ fun StudentsContent(component: StudentsComponent) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(14.dp,0.dp,14.dp,14.dp)
     ){
-        stickyHeader {
-            StudentHeader()
-        }
+//        stickyHeader {
+//            StudentHeader()
+//        }
         item{
             SearchCard { component.onClickSearch() }
         }
@@ -102,32 +102,6 @@ private fun SearchCard(
                 color = Color(0xFF8A8686)
             )
         }
-    }
-}
-
-@Composable
-private fun StudentHeader(){
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(75.dp)
-            .drawBehind {
-                drawCircle(
-                    color = Color(0xFF1197F9),
-                    center = Offset(
-                        x = center.x,
-                        y = round(center.y - size.height * 9.6).toFloat()
-                    ),
-                    radius = size.maxDimension * 2
-                )
-            }
-    ){
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = "Журнал",
-            fontSize = 26.sp,
-            color = Color.White
-        )
     }
 }
 

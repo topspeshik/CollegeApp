@@ -3,4 +3,7 @@
     <string name="searchStudents">Поиск учеников</string>
     <string name="NothingFound">Ничего не найдено</string>
     <string name="Search">Поиск</string>
+    <string name="Students">Ученики</string>
+    <string name="Groups">Группа</string>
+    <string name="Classbook">Журнал</string>
 </resources>
