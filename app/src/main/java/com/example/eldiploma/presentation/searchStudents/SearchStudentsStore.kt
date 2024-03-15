@@ -1,15 +1,13 @@
 package com.example.eldiploma.presentation.searchStudents
 
-import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.example.eldiploma.domain.entity.Student
 import com.example.eldiploma.domain.entity.StudentGroup
+import com.example.eldiploma.domain.local.usecase.GetStudentGroupsByGroupNameUseCase
 import com.example.eldiploma.domain.local.usecase.GetStudentGroupsByNameUseCase
-import com.example.eldiploma.domain.local.usecase.GetStudentsByName
 import com.example.eldiploma.presentation.searchStudents.SearchStudentsStore.Intent
 import com.example.eldiploma.presentation.searchStudents.SearchStudentsStore.Label
 import com.example.eldiploma.presentation.searchStudents.SearchStudentsStore.State
@@ -28,11 +26,14 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
         data object ClickSearch: Intent
 
         data class ClickStudent(val studentGroup: StudentGroup): Intent
+
+        data class ClickGroup(val studentGroup: StudentGroup): Intent
     }
 
     data class State(
         val searchQuery: String,
-        val searchState: SearchState
+        val searchState: SearchState,
+        val openReason: OpenReason
     ){
 
         sealed interface SearchState{
@@ -52,23 +53,27 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
         data object ClickBack: Label
 
         data class OpenStudent(val studentGroup: StudentGroup): Label
+
+        data class OpenGroup(val studentGroup: StudentGroup): Label
     }
 }
 
  class SearchStudentsStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory,
-    private val getStudentsByName: GetStudentGroupsByNameUseCase
+    private val getStudentsByName: GetStudentGroupsByNameUseCase,
+    private val getGroupsByGroupName: GetStudentGroupsByGroupNameUseCase
 ) {
 
-    fun create(): SearchStudentsStore =
+    fun create(openReason: OpenReason): SearchStudentsStore =
         object : SearchStudentsStore, Store<Intent, State, Label> by storeFactory.create(
             name = "SearchStudentsStore",
             initialState = State(
                 searchQuery = "",
-                searchState = State.SearchState.Initial
+                searchState = State.SearchState.Initial,
+                openReason = openReason
             ),
             bootstrapper = BootstrapperImpl(),
-            executorFactory = ::ExecutorImpl,
+            executorFactory = {ExecutorImpl(openReason)},
             reducer = ReducerImpl
         ) {}
 
@@ -83,12 +88,12 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
         data class SearchResultLoaded(val students: List<StudentGroup>) : Msg
     }
 
-    private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
+    private class BootstrapperImpl() : CoroutineBootstrapper<Action>() {
         override fun invoke() {
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
+    private inner class ExecutorImpl(private val openReason: OpenReason) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
 
         private var searchJob : Job? = null
         override fun executeIntent(intent: Intent, getState: () -> State) {
@@ -102,15 +107,53 @@ interface SearchStudentsStore : Store<Intent, State, Label> {
                 Intent.ClickSearch -> {
                     searchJob?.cancel()
                     searchJob = scope.launch {
-                        dispatch(Msg.LoadingSearchResult)
-                        Log.d("searCHqUQRRT", getState().searchQuery)
-                        val students = getStudentsByName(getState().searchQuery)
-                        dispatch(Msg.SearchResultLoaded(students))
+                        when (getState().openReason){
+                            OpenReason.StudentSearch -> {
+                                dispatch(Msg.LoadingSearchResult)
+                                val students = getStudentsByName(getState().searchQuery)
+                                val groupedByStudentId = students.groupBy { it.studentId }
+                                val modifiedGroups = groupedByStudentId.flatMap { (id, groups) ->
+                                    val groupps = mutableListOf<StudentGroup>()
+                                    var groupsName : String = ""
+                                    if (groups.size >1){
+                                        groups.forEach{
+                                            groupsName+= "${it.groupName}, "
+                                        }
+                                        groupsName = groupsName.dropLast(2)
+                                        groupps.add(groups[0].copy(groupName = groupsName))
+                                    }
+                                    else{
+                                        groupps.add(groups[0])
+                                    }
+                                    groupps
+
+
+                                }
+                                dispatch(Msg.SearchResultLoaded(students))
+                            }
+                            OpenReason.GroupSearch -> {
+                                dispatch(Msg.LoadingSearchResult)
+                                val groups = getGroupsByGroupName(getState().searchQuery)
+                                val groupedByGroupId = groups.groupBy { it.groupId }
+                                val modifiedGroups = groupedByGroupId.flatMap { (id, students) ->
+                                    val studentss= mutableListOf<StudentGroup>()
+                                    studentss.add(students[0].copy(name = "Количество учеников = ${students.size}"))
+                                    studentss
+                                }
+                                dispatch(Msg.SearchResultLoaded(modifiedGroups))
+                            }
+                        }
+
                     }
 
                 }
                 is Intent.ClickStudent -> {
                     publish(Label.OpenStudent(intent.studentGroup))
+                }
+
+                is Intent.ClickGroup -> {
+                    publish(Label.OpenGroup(intent.studentGroup))
+
                 }
             }
         }

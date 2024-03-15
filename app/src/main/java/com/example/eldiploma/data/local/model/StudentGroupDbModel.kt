@@ -22,6 +22,6 @@ data class StudentGroupDbModel(
     @PrimaryKey val id: String,
     val studentId: String,
     val name: String?,
-    val groupId: String?,
+    val groupId: String,
     val groupName: String?
 )

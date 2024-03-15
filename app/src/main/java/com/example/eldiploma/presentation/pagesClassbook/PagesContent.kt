@@ -40,6 +40,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.pages.PagesScrollAnima
 import com.example.eldiploma.R
 import com.example.eldiploma.presentation.classbook.ClassbookContent
 import com.example.eldiploma.presentation.groups.GroupsContent
+import com.example.eldiploma.presentation.groupsRoot.GroupsRootContent
 import kotlin.math.round
 
 
@@ -71,7 +72,7 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
 
                 ) {
                     Text(
-                        text = stringResource(R.string.Students),
+                        text = stringResource(R.string.Groups),
                         color = colorPicked.value,
                         modifier = Modifier
                             .clickable(onClick = component::selectPrev)
@@ -87,7 +88,7 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
 
                 ) {
                     Text(
-                        text = stringResource(R.string.Groups),
+                        text = stringResource(R.string.Students),
                         color = colorUnpicked.value,
                         modifier = Modifier
                             .clickable(onClick = component::selectNext)
@@ -109,13 +110,12 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
         ) { _, page ->
             when (page) {
                 is PagesClassbookComponent.Child.Groups -> {
-                    changeColor(2, colorPicked, colorUnpicked)
-
-                    GroupsContent(component = page.component)
+                    changeColor(1, colorPicked, colorUnpicked)
+                    GroupsRootContent(component = page.component)
                 }
 
                 is PagesClassbookComponent.Child.Students -> {
-                    changeColor(1, colorPicked, colorUnpicked)
+                    changeColor(2, colorPicked, colorUnpicked)
                     ClassbookContent(component = page.component)
                 }
             }

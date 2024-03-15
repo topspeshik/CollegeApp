@@ -1,5 +1,6 @@
 package com.example.eldiploma.presentation.students
 
+import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -62,7 +63,25 @@ class StudentStoreFactory @Inject constructor(
         override fun invoke() {
             scope.launch {
                 getStudentGroupsUseCase().collect{
-                    dispatch(Action.StudentsLoaded(it))
+                    val groupedByStudentId = it.groupBy { it.studentId }
+                    val modifiedGroups = groupedByStudentId.flatMap { (id, groups) ->
+                        val groupps = mutableListOf<StudentGroup>()
+                        var groupsName : String = ""
+                        if (groups.size >1){
+                            groups.forEach{
+                                groupsName+= "${it.groupName}, "
+                            }
+                            groupsName = groupsName.dropLast(2)
+                            groupps.add(groups[0].copy(groupName = groupsName))
+                        }
+                        else{
+                            groupps.add(groups[0])
+                        }
+                        groupps
+
+
+                    }
+                    dispatch(Action.StudentsLoaded(modifiedGroups))
                 }
             }
         }

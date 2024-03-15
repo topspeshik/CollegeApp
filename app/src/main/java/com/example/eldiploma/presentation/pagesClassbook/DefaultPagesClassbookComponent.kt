@@ -13,6 +13,7 @@ import com.arkivanov.decompose.router.pages.selectPrev
 import com.arkivanov.decompose.value.Value
 import com.example.eldiploma.presentation.groups.DefaultGroupsComponent
 import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
+import com.example.eldiploma.presentation.groupsRoot.DefaultGroupsRootComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -21,6 +22,7 @@ import kotlinx.parcelize.Parcelize
 @OptIn(ExperimentalDecomposeApi::class)
 class DefaultPagesClassbookComponent @AssistedInject constructor(
     private val classbookComponentFactory: DefaultClassbookComponent.Factory,
+    private val groupsComponentFactory: DefaultGroupsRootComponent.Factory,
     @Assisted componentContext: ComponentContext,
 ) : PagesClassbookComponent, ComponentContext by componentContext {
 
@@ -31,7 +33,7 @@ class DefaultPagesClassbookComponent @AssistedInject constructor(
             source = nav,
             initialPages = {
                 Pages(
-                    items = List(2) {index -> if(index==1) Config.Students else Config.Groups},
+                    items = List(2) {index -> if(index==1) Config.Groups else Config.Students},
                     selectedIndex = 0,
                 )
             },
@@ -41,8 +43,7 @@ class DefaultPagesClassbookComponent @AssistedInject constructor(
                    PagesClassbookComponent.Child.Students(classbookComponentFactory.create(childComponentContext))
                }
                Config.Students -> {
-                   PagesClassbookComponent.Child.Groups(DefaultGroupsComponent(componentContext))
-
+                   PagesClassbookComponent.Child.Groups(groupsComponentFactory.create(childComponentContext))
                }
            }
         }

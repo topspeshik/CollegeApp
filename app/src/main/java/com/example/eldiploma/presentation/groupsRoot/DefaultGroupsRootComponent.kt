@@ -1,4 +1,4 @@
-package com.example.eldiploma.presentation.classbook
+package com.example.eldiploma.presentation.groupsRoot
 
 import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
@@ -17,16 +17,16 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.parcelize.Parcelize
 
-class DefaultClassbookComponent @AssistedInject constructor(
-    private val studentsComponentFactory: DefaultStudentsComponent.Factory,
+class DefaultGroupsRootComponent @AssistedInject constructor(
+    private val groupsComponentFactory: DefaultGroupsComponent.Factory,
     private val searchStudentsComponentFactory: DefaultSearchStudentsComponent.Factory,
     @Assisted componentContext: ComponentContext
-) : ClassbookComponent, ComponentContext by componentContext {
+) : GroupsRootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
-    override val stack: Value<ChildStack<*, ClassbookComponent.Child>> = childStack(
+    override val stack: Value<ChildStack<*, GroupsRootComponent.Child>> = childStack(
         source = navigation,
-        initialConfiguration = Config.Students,
+        initialConfiguration = Config.Groups,
         handleBackButton = true,
         childFactory = ::child
     )
@@ -34,11 +34,11 @@ class DefaultClassbookComponent @AssistedInject constructor(
     private fun child(
         config: Config,
         componentContext: ComponentContext
-    ): ClassbookComponent.Child{
-        return when(config){
-            Config.SearchStudents -> {
+    ): GroupsRootComponent.Child {
+        return when (config) {
+            Config.SearchGroups -> {
                 val component = searchStudentsComponentFactory.create(
-                    openReason = OpenReason.StudentSearch,
+                    openReason = OpenReason.GroupSearch,
                     onBackClicked = {
                         navigation.pop()
                     },
@@ -50,38 +50,42 @@ class DefaultClassbookComponent @AssistedInject constructor(
                     },
                     componentContext = componentContext
                 )
-                ClassbookComponent.Child.SearchStudents(component)
+                GroupsRootComponent.Child.SearchGroups(component)
             }
-            Config.Students -> {
-                val component = studentsComponentFactory.create(
+
+            Config.Groups -> {
+                val component = groupsComponentFactory.create(
                     onSearchClicked = {
-                        navigation.push(Config.SearchStudents)
+                        navigation.push(Config.SearchGroups)
                     },
-                    onStudentClicked = {
+                    onGroupClicked = {
 
                     },
                     componentContext = componentContext
                 )
-                ClassbookComponent.Child.Students(component)
+                GroupsRootComponent.Child.Groups(component)
             }
+
         }
 
     }
 
-    sealed interface Config: Parcelable {
+    sealed interface Config : Parcelable {
 
         @Parcelize
-        data object Students: Config
+        data object Groups : Config
+
         @Parcelize
-        data object SearchStudents: Config
+        data object SearchGroups : Config
+
 
     }
 
     @AssistedFactory
-    interface Factory{
+    interface Factory {
 
         fun create(
             @Assisted componentContext: ComponentContext
-        ) : DefaultClassbookComponent
+        ): DefaultGroupsRootComponent
     }
 }

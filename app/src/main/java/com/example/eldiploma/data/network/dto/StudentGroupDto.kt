@@ -13,7 +13,7 @@ data class StudentGroupDto(
     val name: String?,
 
     @SerializedName("groupId")
-    val groupId: String?,
+    val groupId: String,
 
     @SerializedName("groupName")
     val groupName: String?

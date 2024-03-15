@@ -17,7 +17,5 @@ fun ClassbookContent(component: ClassbookComponent) {
                 StudentsContent(component = instance.component)
             }
         }
-        }
-
-
+    }
 }

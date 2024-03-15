@@ -22,8 +22,6 @@ import com.example.eldiploma.domain.local.usecase.AddStudentsUseCase
 import com.example.eldiploma.domain.network.usecase.GetGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentsNetworkUseCase
-import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
-import com.example.eldiploma.presentation.classbook.ClassbookContent
 import com.example.eldiploma.presentation.root.DefaultRootComponent
 import com.example.eldiploma.presentation.root.RootContent
 import com.google.gson.Gson

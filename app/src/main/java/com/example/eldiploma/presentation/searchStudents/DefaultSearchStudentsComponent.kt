@@ -18,12 +18,14 @@ import javax.inject.Inject
 
 class DefaultSearchStudentsComponent @AssistedInject constructor(
     private val storeFactory: SearchStudentsStoreFactory,
+    @Assisted private val openReason: OpenReason,
     @Assisted private val onBackClicked: () -> Unit,
     @Assisted private val onStudentClicked: (StudentGroup) -> Unit,
+    @Assisted("onGroupClicked") private val onGroupClicked: (StudentGroup) -> Unit,
     @Assisted componentContext: ComponentContext
 ) : SearchStudentsComponent, ComponentContext by componentContext {
 
-    private val store = instanceKeeper.getStore { storeFactory.create() }
+    private val store = instanceKeeper.getStore { storeFactory.create(openReason) }
     private val scope = componentScope()
 
 
@@ -33,6 +35,7 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
                 when (it) {
                     SearchStudentsStore.Label.ClickBack -> onBackClicked()
                     is SearchStudentsStore.Label.OpenStudent -> onStudentClicked(it.studentGroup)
+                    is SearchStudentsStore.Label.OpenGroup ->  onGroupClicked(it.studentGroup)
                 }
             }
         }
@@ -56,7 +59,10 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
 
     override fun onStudentClick(studentGroup: StudentGroup) {
         store.accept(SearchStudentsStore.Intent.ClickStudent(studentGroup))
+    }
 
+    override fun onGroupClick(studentGroup: StudentGroup) {
+        store.accept(SearchStudentsStore.Intent.ClickGroup(studentGroup))
     }
 
 
@@ -64,8 +70,10 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
     interface Factory {
 
         fun create(
+            @Assisted openReason: OpenReason,
             @Assisted onBackClicked: () -> Unit,
             @Assisted onStudentClicked: (StudentGroup) -> Unit,
+            @Assisted("onGroupClicked") onGroupClicked: (StudentGroup) -> Unit,
             @Assisted componentContext: ComponentContext
         ): DefaultSearchStudentsComponent
     }

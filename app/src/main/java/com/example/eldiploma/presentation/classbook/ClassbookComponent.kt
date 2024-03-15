@@ -14,6 +14,5 @@ interface ClassbookComponent {
 
         data class SearchStudents(val component: SearchStudentsComponent) : Child
 
-
     }
 }

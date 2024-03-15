@@ -15,6 +15,9 @@ interface StudentGroupDao {
     @Query("SELECT * FROM student_group WHERE name LIKE '%' || :search || '%'")
     suspend fun getStudentGroupsByName(search: String): List<StudentGroupDbModel>
 
+    @Query("SELECT * FROM student_group WHERE groupName LIKE '%' || :search || '%'")
+    suspend fun getStudentGroupsByGroupName(search: String): List<StudentGroupDbModel>
+
     @Upsert
     suspend fun addStudentGroup(studentGroupDbModel: StudentGroupDbModel)
 

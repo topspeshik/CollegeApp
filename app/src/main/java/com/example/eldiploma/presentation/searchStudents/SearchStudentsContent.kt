@@ -54,7 +54,7 @@ fun SearchStudentsContent(component: SearchStudentsComponent) {
     val focusRequester = remember{
         FocusRequester()
     }
-    
+
     LaunchedEffect(key1 = Unit){
         focusRequester.requestFocus()
     }
@@ -115,9 +115,16 @@ fun SearchStudentsContent(component: SearchStudentsComponent) {
                 ){
                     items(
                         items = searchState.students,
-                        key = {it.studentId}
+                        key = {it.studentId + it.groupId}
                     ){
-                       StudentCard(studentGroup = it, onStudentClick = {component.onStudentClick(it)})
+                       StudentCard(studentGroup = it, onStudentClick = {
+                           if(state.openReason == OpenReason.StudentSearch){
+                               component.onStudentClick(it)
+                           } else{
+                               component.onGroupClick(it)
+                           }
+                           }
+                       )
                     }
                 }
 

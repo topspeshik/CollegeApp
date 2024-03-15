@@ -30,4 +30,8 @@ class StudentGroupRepositoryImpl @Inject constructor(
         return studentGroupDao.getStudentGroupsByName(search).map { it.toEntity() }
 
     }
+
+    override suspend fun getStudentGroupsByGroupName(search: String): List<StudentGroup> {
+        return studentGroupDao.getStudentGroupsByGroupName(search).map { it.toEntity() }
+    }
 }

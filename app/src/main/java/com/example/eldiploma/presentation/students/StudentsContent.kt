@@ -64,7 +64,7 @@ fun StudentsContent(component: StudentsComponent) {
         }
       items(
           items = state.value.studentsList,
-          key = {it.studentId}
+          key = {it.studentId+it.groupId}
       ){
           StudentCard(it, onStudentClick = {component.onStudentClick(it)})
       }

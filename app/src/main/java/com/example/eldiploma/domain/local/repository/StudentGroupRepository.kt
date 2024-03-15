@@ -13,4 +13,6 @@ interface StudentGroupRepository {
 
     suspend fun getStudentGroupsByName(search: String): List<StudentGroup>
 
+    suspend fun getStudentGroupsByGroupName(search: String) :List<StudentGroup>
+
 }

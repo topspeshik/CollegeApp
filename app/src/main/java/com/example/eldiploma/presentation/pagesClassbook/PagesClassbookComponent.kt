@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.value.Value
 import com.example.eldiploma.presentation.groups.GroupsComponent
 import com.example.eldiploma.presentation.classbook.ClassbookComponent
+import com.example.eldiploma.presentation.groupsRoot.GroupsRootComponent
 
 interface PagesClassbookComponent {
 
@@ -19,7 +20,7 @@ interface PagesClassbookComponent {
     sealed interface Child{
         data class Students(val component: ClassbookComponent) : Child
 
-        data class Groups(val component: GroupsComponent) : Child
+        data class Groups(val component: GroupsRootComponent) : Child
 
 
     }

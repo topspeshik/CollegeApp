@@ -12,8 +12,6 @@ import com.example.eldiploma.presentation.classbook.ClassbookComponent
 import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
 import com.example.eldiploma.presentation.pagesClassbook.DefaultPagesClassbookComponent
 import com.example.eldiploma.presentation.profile.DefaultProfileComponent
-import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
-import com.example.eldiploma.presentation.students.DefaultStudentsComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -15,4 +15,7 @@ interface SearchStudentsComponent {
     fun onClickSearch()
 
     fun onStudentClick(studentGroup: StudentGroup)
+
+    fun onGroupClick(studentGroup: StudentGroup)
+
 }
