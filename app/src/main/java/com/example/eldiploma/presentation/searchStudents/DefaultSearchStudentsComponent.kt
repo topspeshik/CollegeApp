@@ -1,5 +1,6 @@
 package com.example.eldiploma.presentation.searchStudents
 
+import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -35,7 +36,9 @@ class DefaultSearchStudentsComponent @AssistedInject constructor(
                 when (it) {
                     SearchStudentsStore.Label.ClickBack -> onBackClicked()
                     is SearchStudentsStore.Label.OpenStudent -> onStudentClicked(it.studentGroup)
-                    is SearchStudentsStore.Label.OpenGroup ->  onGroupClicked(it.studentGroup)
+                    is SearchStudentsStore.Label.OpenGroup -> {
+                        onGroupClicked(it.studentGroup)
+                    }
                 }
             }
         }

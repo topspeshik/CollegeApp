@@ -55,7 +55,7 @@ fun GroupsContent(component: GroupsComponent) {
             items = state.value.groupsList,
             key = {it.groupId}
         ){
-            GroupCard(it, onStudentClick = {component.onGroupClick(it)})
+            GroupCard(it, onGroupClick = {component.onGroupClick(it)})
         }
     }
 }
@@ -97,12 +97,12 @@ private fun SearchCard(
 @Composable
 private fun GroupCard(
     studentGroup: StudentGroup,
-    onStudentClick: () -> Unit
+    onGroupClick: () -> Unit
 ){
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { onStudentClick() }
+            .clickable { onGroupClick() }
             .shadow(
                 elevation = 4.dp,
                 shape = MaterialTheme.shapes.large
@@ -135,7 +135,7 @@ private fun GroupCard(
                 }
             }
 
-            IconButton(onClick = { onStudentClick() }) {
+            IconButton(onClick = { onGroupClick() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrowleft),
                     contentDescription = "Перейти к группе",

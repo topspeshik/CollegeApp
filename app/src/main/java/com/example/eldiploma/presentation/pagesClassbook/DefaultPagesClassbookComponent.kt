@@ -11,6 +11,7 @@ import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.router.pages.selectNext
 import com.arkivanov.decompose.router.pages.selectPrev
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.presentation.groups.DefaultGroupsComponent
 import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
 import com.example.eldiploma.presentation.groupsRoot.DefaultGroupsRootComponent
@@ -23,6 +24,7 @@ import kotlinx.parcelize.Parcelize
 class DefaultPagesClassbookComponent @AssistedInject constructor(
     private val classbookComponentFactory: DefaultClassbookComponent.Factory,
     private val groupsComponentFactory: DefaultGroupsRootComponent.Factory,
+    @Assisted("onGroupClicked") onGroupClicked: (StudentGroup) -> Unit,
     @Assisted componentContext: ComponentContext,
 ) : PagesClassbookComponent, ComponentContext by componentContext {
 
@@ -33,17 +35,20 @@ class DefaultPagesClassbookComponent @AssistedInject constructor(
             source = nav,
             initialPages = {
                 Pages(
-                    items = List(2) {index -> if(index==1) Config.Groups else Config.Students},
+                    items = List(2) {index -> if(index==0) Config.Groups else Config.Students},
                     selectedIndex = 0,
                 )
             },
         ) { config, childComponentContext ->
            when(config){
-               Config.Groups -> {
-                   PagesClassbookComponent.Child.Students(classbookComponentFactory.create(childComponentContext))
-               }
                Config.Students -> {
-                   PagesClassbookComponent.Child.Groups(groupsComponentFactory.create(childComponentContext))
+                   PagesClassbookComponent.Child.Students(classbookComponentFactory.create(
+                       childComponentContext))
+               }
+               Config.Groups -> {
+                   PagesClassbookComponent.Child.Groups(groupsComponentFactory.create(
+                       onGroupClicked = onGroupClicked,
+                       childComponentContext))
                }
            }
         }
@@ -71,6 +76,7 @@ class DefaultPagesClassbookComponent @AssistedInject constructor(
     interface Factory{
 
         fun create(
+            @Assisted("onGroupClicked") onGroupClicked: (StudentGroup) -> Unit,
             @Assisted componentContext: ComponentContext
         ) : DefaultPagesClassbookComponent
     }

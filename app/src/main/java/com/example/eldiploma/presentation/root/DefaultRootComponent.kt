@@ -8,6 +8,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.presentation.attendance.DefaultAttendanceComponent
 import com.example.eldiploma.presentation.classbook.ClassbookComponent
 import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
 import com.example.eldiploma.presentation.pagesClassbook.DefaultPagesClassbookComponent
@@ -40,8 +41,16 @@ class DefaultRootComponent @AssistedInject constructor(
                 RootComponent.Child.Profile(component)
             }
             Config.Classbook -> {
-                val component = pagesFactoryComponent.create(componentContext)
+                val component = pagesFactoryComponent.create(
+                    onGroupClicked = {
+                        navigation.push(Config.Attendance)
+                    },
+                    componentContext)
                 RootComponent.Child.Pages(component)
+            }
+            Config.Attendance -> {
+                val component = DefaultAttendanceComponent(componentContext)
+                RootComponent.Child.Attendance(component)
             }
         }
 
@@ -53,6 +62,9 @@ class DefaultRootComponent @AssistedInject constructor(
         data object Profile: Config
         @Parcelize
         data object Classbook: Config
+
+        @Parcelize
+        data object Attendance: Config
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.eldiploma.presentation.groupsRoot
 
 import android.os.Parcelable
+import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -8,6 +9,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.presentation.groups.DefaultGroupsComponent
 import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
 import com.example.eldiploma.presentation.searchStudents.OpenReason
@@ -20,6 +22,7 @@ import kotlinx.parcelize.Parcelize
 class DefaultGroupsRootComponent @AssistedInject constructor(
     private val groupsComponentFactory: DefaultGroupsComponent.Factory,
     private val searchStudentsComponentFactory: DefaultSearchStudentsComponent.Factory,
+    @Assisted("onGroupClicked") private val onGroupClicked: (StudentGroup) -> Unit,
     @Assisted componentContext: ComponentContext
 ) : GroupsRootComponent, ComponentContext by componentContext {
 
@@ -46,7 +49,7 @@ class DefaultGroupsRootComponent @AssistedInject constructor(
 
                     },
                     onGroupClicked = {
-
+                        onGroupClicked(it)
                     },
                     componentContext = componentContext
                 )
@@ -59,6 +62,7 @@ class DefaultGroupsRootComponent @AssistedInject constructor(
                         navigation.push(Config.SearchGroups)
                     },
                     onGroupClicked = {
+                        onGroupClicked(it)
 
                     },
                     componentContext = componentContext
@@ -85,6 +89,7 @@ class DefaultGroupsRootComponent @AssistedInject constructor(
     interface Factory {
 
         fun create(
+            @Assisted("onGroupClicked") onGroupClicked: (StudentGroup) -> Unit,
             @Assisted componentContext: ComponentContext
         ): DefaultGroupsRootComponent
     }

@@ -1,6 +1,7 @@
 package com.example.eldiploma.presentation.classbook
 
 import android.os.Parcelable
+import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -8,6 +9,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.presentation.groups.DefaultGroupsComponent
 import com.example.eldiploma.presentation.searchStudents.DefaultSearchStudentsComponent
 import com.example.eldiploma.presentation.searchStudents.OpenReason
