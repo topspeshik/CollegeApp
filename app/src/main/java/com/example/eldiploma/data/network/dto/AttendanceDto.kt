@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AttendanceDto(
     @SerializedName("id")
-    val id: String?,
+    val id: String,
 
     @SerializedName("contactId")
     val studentId: String?,
@@ -18,9 +18,6 @@ data class AttendanceDto(
     @SerializedName("meetingName")
     val meetingName: String?,
 
-    @SerializedName("contactId")
-    val contactId: String?,
-
     @SerializedName("contactName")
-    val contactName: String?
+    val studentName: String?
 )

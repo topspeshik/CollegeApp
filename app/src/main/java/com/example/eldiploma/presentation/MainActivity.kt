@@ -1,25 +1,34 @@
 package com.example.eldiploma.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.example.eldiploma.MainApp
 import com.example.eldiploma.data.local.LocalDatabase
+import com.example.eldiploma.data.local.repository.AttendanceRepositoryImpl
 import com.example.eldiploma.data.local.repository.GroupRepositoryImpl
+import com.example.eldiploma.data.local.repository.MeetingRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentGroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentRepositoryImpl
 import com.example.eldiploma.data.network.AccountRequestParams
 import com.example.eldiploma.data.network.ApiFactory
 import com.example.eldiploma.data.network.WhereCondition
+import com.example.eldiploma.data.network.repository.AttendanceNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.GroupNetworkRepositoryImpl
+import com.example.eldiploma.data.network.repository.MeetingNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentGroupNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentNetworkRepositoryImpl
+import com.example.eldiploma.domain.local.usecase.AddAttendanceUseCase
 import com.example.eldiploma.domain.local.usecase.AddGroupsUseCase
+import com.example.eldiploma.domain.local.usecase.AddMeetingUseCase
 import com.example.eldiploma.domain.local.usecase.AddStudentGroupsUseCase
 import com.example.eldiploma.domain.local.usecase.AddStudentsUseCase
+import com.example.eldiploma.domain.network.usecase.GetAttendanceNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetGroupNetworkUseCase
+import com.example.eldiploma.domain.network.usecase.GetMeetingNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentsNetworkUseCase
 import com.example.eldiploma.presentation.root.DefaultRootComponent
@@ -90,12 +99,31 @@ class MainActivity : ComponentActivity() {
                 )
                 AddStudentsUseCase(repositoryLocal1).invoke(students1)
 
+
                 val repositoryLocal = StudentGroupRepositoryImpl(
                     LocalDatabase.getInstance(applicationContext).studentGroupDao()
                 )
                 AddStudentGroupsUseCase(repositoryLocal).invoke(studentGroups)
+
+                val attendanceNetworkRep = AttendanceNetworkRepositoryImpl(ApiFactory.apiService)
+                val attendance = GetAttendanceNetworkUseCase(attendanceNetworkRep).invoke()
+                val attendanceRep = AttendanceRepositoryImpl(
+                    LocalDatabase.getInstance(applicationContext).attendanceDao()
+                )
+                AddAttendanceUseCase(attendanceRep).invoke(attendance)
+
+                val meetingNetworkRep = MeetingNetworkRepositoryImpl(ApiFactory.apiService)
+                val meeting = GetMeetingNetworkUseCase(meetingNetworkRep).invoke()
+                val meetingRep = MeetingRepositoryImpl(
+                    LocalDatabase.getInstance(applicationContext).metingDao()
+                )
+                AddMeetingUseCase(meetingRep).invoke(meeting)
+
+
             }
-            catch (e: Exception){}
+            catch (e: Exception){
+                Log.d("checkException", e.toString())
+            }
         }
 
         setContent {

@@ -1,7 +1,7 @@
 package com.example.eldiploma.domain.entity
 
 data class Meeting(
-    val id: String?,
+    val id: String,
     val name: String?,
     val dateStart: String?,
     val dateEnd: String?,

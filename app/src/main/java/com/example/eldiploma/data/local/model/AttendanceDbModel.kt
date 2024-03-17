@@ -10,6 +10,5 @@ data class AttendanceDbModel(
     val isPresent: Boolean?,
     val meetingId: String?,
     val meetingName: String?,
-    val contactId: String?,
-    val contactName: String?
+    val studentName: String?
 )
