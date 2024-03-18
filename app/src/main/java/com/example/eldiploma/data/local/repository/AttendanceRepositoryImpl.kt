@@ -26,8 +26,8 @@ class AttendanceRepositoryImpl @Inject constructor(
 
     }
 
-    override fun getAttendanceWithMeeting(groupId: String): Flow<List<Attendance>> {
-        return attendanceDao.getAttendanceWithMeeting(groupId).map { it.toEntities() }
+    override fun getAttendanceWithMeeting(groupId: String, date: String): Flow<List<Attendance>> {
+        return attendanceDao.getAttendanceWithMeeting(groupId, date).map { it.toEntities() }
 
     }
 

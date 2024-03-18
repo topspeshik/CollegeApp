@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.eldiploma"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -101,4 +101,8 @@ dependencies {
 
     implementation("com.google.dagger:dagger:2.48.1")
     ksp("com.google.dagger:dagger-compiler:2.48.1")
+
+
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.3.0")
 }

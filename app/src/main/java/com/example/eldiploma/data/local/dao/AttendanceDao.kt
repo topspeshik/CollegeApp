@@ -18,7 +18,8 @@ interface AttendanceDao {
     suspend fun addAttendance(attendanceDbModel: AttendanceDbModel)
 
 
-    @Query("SELECT a.id, a.studentName, a.meetingId, a.meetingName, a.isPresent, a.studentId FROM attendance a JOIN meeting mt ON a.meetingId = mt.id WHERE mt.groupId = :groupId")
-    fun getAttendanceWithMeeting(groupId: String): Flow<List<AttendanceDbModel>>
+    @Query("SELECT a.id, a.studentName, a.meetingId, a.meetingName, a.isPresent, a.studentId FROM attendance a " +
+            "JOIN meeting mt ON a.meetingId = mt.id WHERE mt.groupId = :groupId AND mt.dateStart  LIKE '%' || :date || '%'")
+    fun getAttendanceWithMeeting(groupId: String, date: String): Flow<List<AttendanceDbModel>>
 
 }

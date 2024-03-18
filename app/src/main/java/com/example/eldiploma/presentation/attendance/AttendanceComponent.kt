@@ -10,4 +10,6 @@ interface AttendanceComponent {
     fun onClickBack()
 
     fun onClickChangePresent(attendance: Attendance)
+
+    fun onDateChanged(date: String)
 }

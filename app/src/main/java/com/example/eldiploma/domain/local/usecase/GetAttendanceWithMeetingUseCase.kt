@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetAttendanceWithMeetingUseCase @Inject constructor(
     private val repository: AttendanceRepository
 ) {
-    operator fun invoke(groupId: String) = repository.getAttendanceWithMeeting(groupId)
+    operator fun invoke(groupId: String, date: String) = repository.getAttendanceWithMeeting(groupId, date)
 }

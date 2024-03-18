@@ -1,5 +1,6 @@
 package com.example.eldiploma.presentation.attendance
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,12 +23,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,20 +47,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.eldiploma.R
 import com.example.eldiploma.domain.entity.Attendance
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlin.math.round
+
 
 @Composable
 fun AttendanceContent(component: AttendanceComponent) {
     Column {
         Header()
-
         val state = component.model.collectAsState()
+
+        val showCalendar= remember {
+            mutableStateOf(false)
+        }
+
+
+
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(14.dp,0.dp,14.dp,14.dp)
+            contentPadding = PaddingValues(14.dp,32.dp,14.dp,14.dp)
         ){
+
+            item{
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val date = LocalDate.parse(state.value.date, formatter)
+                val formattedDate = date.format(DateTimeFormatter.ofPattern("dd MMM"))
+                Text(
+                    text = formattedDate,
+                    Modifier.clickable { showCalendar.value = true }
+
+                )
+                if (showCalendar.value){
+                    Calendar(showCalendar, onDateChanded = {component.onDateChanged(it)})
+                }
+            }
+
+
 
             items(
                 items = state.value.studentAttendance,
@@ -65,6 +101,31 @@ fun AttendanceContent(component: AttendanceComponent) {
         }
     }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Calendar(
+    showCalendar: MutableState<Boolean>,
+    onDateChanded: (date: String) -> Unit
+){
+    val selectedDates = remember { mutableStateOf<List<LocalDate>>(listOf()) }
+
+    CalendarDialog(
+        state = rememberUseCaseState(visible = true, onCloseRequest = {showCalendar.value = false  }),
+        config = CalendarConfig(
+            yearSelection = true,
+            monthSelection = true,
+            style = CalendarStyle.MONTH
+        ),
+        selection = CalendarSelection.Dates { newDates ->
+            selectedDates.value = newDates
+            onDateChanded(selectedDates.value[0].toString())
+            Log.d("checkSelectedDates", selectedDates.value[0].toString())
+            showCalendar.value = false
+        },
+    )
+//
 }
 
 
@@ -120,7 +181,7 @@ fun RoundedCornerCheckBox(
             .border(width = 3.dp, color = Color(0xFF1197F9), shape = RoundedCornerShape(16.dp))
             .clip(CircleShape)
             .background(Color(0xFF1197F9))
-            .clickable {  onPresentClick() }
+            .clickable { onPresentClick() }
             .background(if (attendance.isPresent == true) Color(0xFF1197F9) else Color.White),
     ) {
         if (attendance.isPresent == true) {

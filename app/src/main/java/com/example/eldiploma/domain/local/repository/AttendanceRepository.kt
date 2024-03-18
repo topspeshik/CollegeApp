@@ -11,6 +11,6 @@ interface AttendanceRepository {
 
     suspend fun addAttendance(attendance: Attendance)
 
-     fun getAttendanceWithMeeting(groupId: String) : Flow<List<Attendance>>
+     fun getAttendanceWithMeeting(groupId: String,date: String) : Flow<List<Attendance>>
 
 }

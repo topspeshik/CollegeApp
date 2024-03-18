@@ -48,6 +48,11 @@ class DefaultAttendanceComponent @AssistedInject constructor(
         store.accept(AttendanceStore.Intent.ClickChangePresent(attendance))
     }
 
+    override fun onDateChanged(date: String) {
+        store.accept(AttendanceStore.Intent.ClickChangeDate(date))
+
+    }
+
     @AssistedFactory
     interface Factory {
 

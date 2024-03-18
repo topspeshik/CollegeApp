@@ -17,6 +17,8 @@ import com.example.eldiploma.presentation.attendance.AttendanceStore.Label
 import com.example.eldiploma.presentation.attendance.AttendanceStore.State
 import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 interface AttendanceStore : Store<Intent, State, Label> {
@@ -25,10 +27,13 @@ interface AttendanceStore : Store<Intent, State, Label> {
         data object ClickBack : Intent
 
         data class ClickChangePresent(val attendance: Attendance) : Intent
+
+        data class ClickChangeDate(val date: String) : Intent
     }
 
     data class State(
         val studentAttendance: List<Attendance>,
+        val date: String
     )
 
 
@@ -44,16 +49,23 @@ class AttendanceStoreFactory @Inject  constructor(
     private val updateAttendanceUseCase: UpdateAttendanceUseCase
 ) {
 
+    val currentDate = LocalDate.now()
+    val formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    lateinit var studentGroupId: String
+
     fun create(studentGroup: StudentGroup): AttendanceStore =
         object : AttendanceStore, Store<Intent, State, Label> by storeFactory.create(
             name = "AttendanceStore",
             initialState = State(
-                studentAttendance = listOf()
+                studentAttendance = listOf(),
+                date = formattedDate
             ),
             bootstrapper = BootstrapperImpl(studentGroup),
             executorFactory = ::ExecutorImpl,
             reducer = ReducerImpl
-        ) {}
+        ) {
+
+        }
 
     private sealed interface Action {
         data class AttendanceLoaded(val attList: List<Attendance>) : Action
@@ -63,17 +75,17 @@ class AttendanceStoreFactory @Inject  constructor(
     private sealed interface Msg {
         data class AttendanceLoaded(val attList: List<Attendance>) : Msg
 
+        data class DateChanged(val date: String) : Msg
+
     }
 
     private inner class BootstrapperImpl(
         private val studentGroup: StudentGroup
     ) : CoroutineBootstrapper<Action>() {
         override fun invoke() {
+            studentGroupId = studentGroup.groupId
             scope.launch {
-                Log.d("checkStudnetGroup", studentGroup.groupId.toString())
-                getAttendanceWithMeetingUseCase(studentGroup.groupId).collect{
-                    Log.d("checkStudnetGroup", it.map { it.studentName }.toString())
-
+                getAttendanceWithMeetingUseCase(studentGroup.groupId, formattedDate).collect{
                     dispatch(Action.AttendanceLoaded(it))
                 }
             }
@@ -97,6 +109,16 @@ class AttendanceStoreFactory @Inject  constructor(
                     }
 
                 }
+
+                is Intent.ClickChangeDate -> {
+                    scope.launch {
+                        getAttendanceWithMeetingUseCase(studentGroupId, intent.date).collect {
+                            Log.d("checkGroups", studentGroupId)
+                            dispatch(Msg.AttendanceLoaded(it))
+                            dispatch(Msg.DateChanged(intent.date))
+                        }
+                    }
+                }
             }
         }
 
@@ -112,7 +134,14 @@ class AttendanceStoreFactory @Inject  constructor(
 
     private object ReducerImpl : Reducer<State, Msg> {
         override fun State.reduce(msg: Msg): State = when(msg){
-            is Msg.AttendanceLoaded -> copy(studentAttendance = msg.attList)
+            is Msg.AttendanceLoaded -> {
+                copy(studentAttendance = msg.attList)
+
+            }
+
+            is Msg.DateChanged -> {
+                copy(date = msg.date)
+            }
         }
     }
 }
