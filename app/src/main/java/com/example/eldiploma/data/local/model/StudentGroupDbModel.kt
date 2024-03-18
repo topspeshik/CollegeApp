@@ -5,18 +5,18 @@ import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 
 @Entity(tableName = "student_group",
-    foreignKeys = [
-        ForeignKey(
-            entity = StudentDbModel::class,
-            parentColumns = ["id"],
-            childColumns = ["studentId"]
-        ),
+//    foreignKeys = [
 //        ForeignKey(
-//            entity = GroupDbModel::class,
+//            entity = StudentDbModel::class,
 //            parentColumns = ["id"],
-//            childColumns = ["groupId"]
-//        )
-    ]
+//            childColumns = ["studentId"]
+//        ),
+////        ForeignKey(
+////            entity = GroupDbModel::class,
+////            parentColumns = ["id"],
+////            childColumns = ["groupId"]
+////        )
+//    ]
     )
 data class StudentGroupDbModel(
     @PrimaryKey val id: String,

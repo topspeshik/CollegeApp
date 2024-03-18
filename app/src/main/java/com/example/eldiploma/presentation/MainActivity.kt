@@ -21,7 +21,7 @@ import com.example.eldiploma.data.network.repository.GroupNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.MeetingNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentGroupNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentNetworkRepositoryImpl
-import com.example.eldiploma.domain.local.usecase.AddAttendanceUseCase
+import com.example.eldiploma.domain.local.usecase.AddAttendanceListUseCase
 import com.example.eldiploma.domain.local.usecase.AddGroupsUseCase
 import com.example.eldiploma.domain.local.usecase.AddMeetingUseCase
 import com.example.eldiploma.domain.local.usecase.AddStudentGroupsUseCase
@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                 val attendanceRep = AttendanceRepositoryImpl(
                     LocalDatabase.getInstance(applicationContext).attendanceDao()
                 )
-                AddAttendanceUseCase(attendanceRep).invoke(attendance)
+                AddAttendanceListUseCase(attendanceRep).invoke(attendance)
 
                 val meetingNetworkRep = MeetingNetworkRepositoryImpl(ApiFactory.apiService)
                 val meeting = GetMeetingNetworkUseCase(meetingNetworkRep).invoke()

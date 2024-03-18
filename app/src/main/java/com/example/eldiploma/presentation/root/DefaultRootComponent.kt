@@ -8,6 +8,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.example.eldiploma.domain.entity.StudentGroup
 import com.example.eldiploma.presentation.attendance.DefaultAttendanceComponent
 import com.example.eldiploma.presentation.classbook.ClassbookComponent
 import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
@@ -20,6 +21,7 @@ import kotlinx.parcelize.Parcelize
 
 class DefaultRootComponent @AssistedInject constructor(
     private val pagesFactoryComponent: DefaultPagesClassbookComponent.Factory,
+    private val attendanceFactoryComponent: DefaultAttendanceComponent.Factory,
     @Assisted componentContext: ComponentContext
 ) : RootComponent, ComponentContext by componentContext {
 
@@ -36,6 +38,15 @@ class DefaultRootComponent @AssistedInject constructor(
         componentContext: ComponentContext
     ): RootComponent.Child{
         return when(config){
+            is Config.Attendance -> {
+                val component = attendanceFactoryComponent.create(
+                    studentGroup = config.studentGroup ,
+                    onBackClicked = { navigation.pop() },
+                    componentContext
+                )
+
+                RootComponent.Child.Attendance(component)
+            }
             Config.Profile -> {
                 val component = DefaultProfileComponent(componentContext)
                 RootComponent.Child.Profile(component)
@@ -43,15 +54,12 @@ class DefaultRootComponent @AssistedInject constructor(
             Config.Classbook -> {
                 val component = pagesFactoryComponent.create(
                     onGroupClicked = {
-                        navigation.push(Config.Attendance)
+                        navigation.push(Config.Attendance(it))
                     },
                     componentContext)
                 RootComponent.Child.Pages(component)
             }
-            Config.Attendance -> {
-                val component = DefaultAttendanceComponent(componentContext)
-                RootComponent.Child.Attendance(component)
-            }
+
         }
 
     }
@@ -64,7 +72,7 @@ class DefaultRootComponent @AssistedInject constructor(
         data object Classbook: Config
 
         @Parcelize
-        data object Attendance: Config
+        data class Attendance(val studentGroup: StudentGroup): Config
 
     }
 
