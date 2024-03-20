@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetMeetingUseCase @Inject constructor(
     private val repository: MeetingRepository
 ) {
-    suspend operator fun invoke() = repository.getMeeting()
+    suspend operator fun invoke(groupId: String) = repository.getMeeting(groupId)
 }

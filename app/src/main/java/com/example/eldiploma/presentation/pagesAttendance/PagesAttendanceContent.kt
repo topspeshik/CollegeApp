@@ -1,4 +1,4 @@
-package com.example.eldiploma.presentation.pagesClassbook
+package com.example.eldiploma.presentation.pagesAttendance
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,14 +28,13 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetpack.pages.Pages
 import com.arkivanov.decompose.extensions.compose.jetpack.pages.PagesScrollAnimation
 import com.example.eldiploma.R
-import com.example.eldiploma.presentation.pagesClassbook.studentsRoot.StudentsRootContent
-import com.example.eldiploma.presentation.pagesClassbook.groupsRoot.GroupsRootContent
+import com.example.eldiploma.presentation.pagesAttendance.attendance.AttendanceContent
+import com.example.eldiploma.presentation.pagesAttendance.attendanceList.AttendanceListContent
 import kotlin.math.round
-
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalDecomposeApi::class)
 @Composable
-fun PagesClassbookContent(component: PagesClassbookComponent) {
+fun PagesAttendanceContent(component: PagesAttendanceComponent) {
 
     Column {
 
@@ -60,13 +60,13 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
 
                 ) {
                     Text(
-                        text = stringResource(R.string.Groups),
+                        text = stringResource(R.string.Students),
                         color = colorPicked.value,
                         modifier = Modifier
                             .clickable(onClick = component::selectPrev)
                             .align(Alignment.CenterHorizontally)
                     )
-                    Divider(color = colorPicked.value, thickness = 2.dp)
+                    HorizontalDivider(thickness = 2.dp, color = colorPicked.value)
                 }
                 Column(
                     modifier = Modifier
@@ -76,7 +76,7 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
 
                 ) {
                     Text(
-                        text = stringResource(R.string.Students),
+                        text = stringResource(R.string.Attendance),
                         color = colorUnpicked.value,
                         modifier = Modifier
                             .clickable(onClick = component::selectNext)
@@ -97,14 +97,14 @@ fun PagesClassbookContent(component: PagesClassbookComponent) {
             scrollAnimation = PagesScrollAnimation.Default,
         ) { _, page ->
             when (page) {
-                is PagesClassbookComponent.Child.Groups -> {
+                is PagesAttendanceComponent.Child.AttendanceList -> {
                     changeColor(1, colorPicked, colorUnpicked)
-                    GroupsRootContent(component = page.component)
+                    AttendanceListContent(component = page.component)
                 }
 
-                is PagesClassbookComponent.Child.Students -> {
+                is PagesAttendanceComponent.Child.Attendance -> {
                     changeColor(2, colorPicked, colorUnpicked)
-                    StudentsRootContent(component = page.component)
+                    AttendanceContent(component = page.component)
                 }
             }
         }
@@ -144,7 +144,7 @@ fun Header() {
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = stringResource(R.string.Classbook),
+            text = stringResource(R.string.Attendance),
             fontSize = 26.sp,
             color = Color.White
         )

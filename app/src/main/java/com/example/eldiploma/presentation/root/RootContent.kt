@@ -2,7 +2,8 @@ package com.example.eldiploma.presentation.root
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.example.eldiploma.presentation.attendance.AttendanceContent
+import com.example.eldiploma.presentation.pagesAttendance.PagesAttendanceContent
+import com.example.eldiploma.presentation.pagesAttendance.attendanceList.AttendanceListContent
 import com.example.eldiploma.presentation.pagesClassbook.PagesClassbookContent
 import com.example.eldiploma.presentation.profile.ProfileContent
 import com.example.eldiploma.presentation.ui.theme.ElDiplomaTheme
@@ -20,7 +21,7 @@ fun RootContent(component: RootComponent) {
                 }
 
                 is RootComponent.Child.Attendance -> {
-                    AttendanceContent(component = instance.component)
+                    PagesAttendanceContent(component = instance.component)
                 }
             }
         }

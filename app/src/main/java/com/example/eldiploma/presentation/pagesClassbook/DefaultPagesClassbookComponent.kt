@@ -12,9 +12,8 @@ import com.arkivanov.decompose.router.pages.selectNext
 import com.arkivanov.decompose.router.pages.selectPrev
 import com.arkivanov.decompose.value.Value
 import com.example.eldiploma.domain.entity.StudentGroup
-import com.example.eldiploma.presentation.groups.DefaultGroupsComponent
-import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
-import com.example.eldiploma.presentation.groupsRoot.DefaultGroupsRootComponent
+import com.example.eldiploma.presentation.pagesClassbook.studentsRoot.DefaultStudentRootComponent
+import com.example.eldiploma.presentation.pagesClassbook.groupsRoot.DefaultGroupsRootComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,7 +21,7 @@ import kotlinx.parcelize.Parcelize
 
 @OptIn(ExperimentalDecomposeApi::class)
 class DefaultPagesClassbookComponent @AssistedInject constructor(
-    private val classbookComponentFactory: DefaultClassbookComponent.Factory,
+    private val classbookComponentFactory: DefaultStudentRootComponent.Factory,
     private val groupsComponentFactory: DefaultGroupsRootComponent.Factory,
     @Assisted("onGroupClicked") onGroupClicked: (StudentGroup) -> Unit,
     @Assisted componentContext: ComponentContext,

@@ -105,4 +105,8 @@ dependencies {
 
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
     implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.3.0")
+
+    implementation("com.github.Breens-Mbaka:BeeTablesCompose:1.1.0")
+    implementation("io.github.windedge.table:table:0.1.1")
+    implementation("com.github.kosenda:AutoSizeTable:1.0.1")
 }

@@ -9,9 +9,8 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.example.eldiploma.domain.entity.StudentGroup
-import com.example.eldiploma.presentation.attendance.DefaultAttendanceComponent
-import com.example.eldiploma.presentation.classbook.ClassbookComponent
-import com.example.eldiploma.presentation.classbook.DefaultClassbookComponent
+import com.example.eldiploma.presentation.pagesAttendance.DefaultPagesAttendanceComponent
+import com.example.eldiploma.presentation.pagesAttendance.attendanceList.DefaultAttendanceListComponent
 import com.example.eldiploma.presentation.pagesClassbook.DefaultPagesClassbookComponent
 import com.example.eldiploma.presentation.profile.DefaultProfileComponent
 import dagger.assisted.Assisted
@@ -21,7 +20,7 @@ import kotlinx.parcelize.Parcelize
 
 class DefaultRootComponent @AssistedInject constructor(
     private val pagesFactoryComponent: DefaultPagesClassbookComponent.Factory,
-    private val attendanceFactoryComponent: DefaultAttendanceComponent.Factory,
+    private val attendanceFactoryComponent: DefaultPagesAttendanceComponent.Factory,
     @Assisted componentContext: ComponentContext
 ) : RootComponent, ComponentContext by componentContext {
 

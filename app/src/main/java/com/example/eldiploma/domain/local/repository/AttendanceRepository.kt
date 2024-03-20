@@ -5,12 +5,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface AttendanceRepository {
 
-    suspend fun getAttendance(): List<Attendance>
+    suspend fun getAttendance(): Flow<List<Attendance>>
 
     suspend fun addAttendanceList(attendance: List<Attendance>)
 
     suspend fun addAttendance(attendance: Attendance)
 
      fun getAttendanceWithMeeting(groupId: String,date: String) : Flow<List<Attendance>>
+
+     fun getAttendanceMeeting(groupId: String) : Flow<List<Attendance>>
 
 }

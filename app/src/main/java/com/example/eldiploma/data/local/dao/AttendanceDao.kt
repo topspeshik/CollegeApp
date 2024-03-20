@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AttendanceDao {
     @Query("SELECT * FROM attendance")
-    fun getAttendance(): List<AttendanceDbModel>
+    fun getAttendance(): Flow<List<AttendanceDbModel>>
 
     @Upsert
     suspend fun addAttendanceList(attendanceDbModels: List<AttendanceDbModel>)
@@ -21,5 +21,9 @@ interface AttendanceDao {
     @Query("SELECT a.id, a.studentName, a.meetingId, a.meetingName, a.isPresent, a.studentId FROM attendance a " +
             "JOIN meeting mt ON a.meetingId = mt.id WHERE mt.groupId = :groupId AND mt.dateStart  LIKE '%' || :date || '%'")
     fun getAttendanceWithMeeting(groupId: String, date: String): Flow<List<AttendanceDbModel>>
+
+    @Query("SELECT a.id, a.studentName, a.meetingId, a.meetingName, a.isPresent, a.studentId FROM attendance a " +
+            "JOIN meeting mt ON a.meetingId = mt.id WHERE mt.groupId = :groupId")
+    fun getAttendanceMeeting(groupId: String): Flow<List<AttendanceDbModel>>
 
 }
