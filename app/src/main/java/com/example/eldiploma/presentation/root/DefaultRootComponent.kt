@@ -22,6 +22,7 @@ import kotlinx.parcelize.Parcelize
 class DefaultRootComponent @AssistedInject constructor(
     private val pagesFactoryComponent: DefaultPagesClassbookComponent.Factory,
     private val attendanceFactoryComponent: DefaultPagesAttendanceComponent.Factory,
+    private val profileComponent: DefaultProfileComponent.Factory,
     @Assisted componentContext: ComponentContext
 ) : RootComponent, ComponentContext by componentContext {
 
@@ -56,7 +57,7 @@ class DefaultRootComponent @AssistedInject constructor(
                 RootComponent.Child.Attendance(component)
             }
             Config.Profile -> {
-                val component = DefaultProfileComponent(componentContext)
+                val component = profileComponent.create(componentContext)
                 RootComponent.Child.Profile(component)
             }
             Config.Classbook -> {

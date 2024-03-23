@@ -8,6 +8,7 @@ import com.example.eldiploma.data.network.dto.MeetingResponseDto
 import com.example.eldiploma.data.network.dto.StudentGroupDto
 import com.example.eldiploma.data.network.dto.StudentGroupResponseDto
 import com.example.eldiploma.data.network.dto.StudentsResponseDto
+import com.example.eldiploma.data.network.dto.TeacherResponseDto
 import com.google.gson.JsonObject
 import retrofit2.Response
 import retrofit2.http.Body
@@ -55,4 +56,7 @@ interface ApiService {
 
     @GET("Meeting")
     suspend fun getMeeting(): MeetingResponseDto
+
+    @GET("Lead")
+    suspend fun getTeachers(): TeacherResponseDto
 }

@@ -13,6 +13,7 @@ import com.example.eldiploma.data.local.repository.GroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.MeetingRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentGroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentRepositoryImpl
+import com.example.eldiploma.data.local.repository.TeacherRepositoryImpl
 import com.example.eldiploma.data.network.AccountRequestParams
 import com.example.eldiploma.data.network.ApiFactory
 import com.example.eldiploma.data.network.WhereCondition
@@ -21,16 +22,19 @@ import com.example.eldiploma.data.network.repository.GroupNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.MeetingNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentGroupNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentNetworkRepositoryImpl
+import com.example.eldiploma.data.network.repository.TeacherNetworkRepositoryImpl
 import com.example.eldiploma.domain.local.usecase.AddAttendanceListUseCase
 import com.example.eldiploma.domain.local.usecase.AddGroupsUseCase
 import com.example.eldiploma.domain.local.usecase.AddMeetingUseCase
 import com.example.eldiploma.domain.local.usecase.AddStudentGroupsUseCase
 import com.example.eldiploma.domain.local.usecase.AddStudentsUseCase
+import com.example.eldiploma.domain.local.usecase.AddTeachersUseCase
 import com.example.eldiploma.domain.network.usecase.GetAttendanceNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetMeetingNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentGroupNetworkUseCase
 import com.example.eldiploma.domain.network.usecase.GetStudentsNetworkUseCase
+import com.example.eldiploma.domain.network.usecase.GetTeachersNetworkUseCase
 import com.example.eldiploma.presentation.root.DefaultRootComponent
 import com.example.eldiploma.presentation.root.RootContent
 import com.google.gson.Gson
@@ -115,10 +119,17 @@ class MainActivity : ComponentActivity() {
                 val meetingNetworkRep = MeetingNetworkRepositoryImpl(ApiFactory.apiService)
                 val meeting = GetMeetingNetworkUseCase(meetingNetworkRep).invoke()
                 val meetingRep = MeetingRepositoryImpl(
-                    LocalDatabase.getInstance(applicationContext).metingDao()
+                    LocalDatabase.getInstance(applicationContext).meetingDao()
                 )
                 AddMeetingUseCase(meetingRep).invoke(meeting)
 
+
+                val teacherNetworkRep = TeacherNetworkRepositoryImpl(ApiFactory.apiService)
+                val teacher = GetTeachersNetworkUseCase(teacherNetworkRep).invoke()
+                val teacherRep = TeacherRepositoryImpl(
+                    LocalDatabase.getInstance(applicationContext).teacherDao()
+                )
+                AddTeachersUseCase(teacherRep).invoke(teacher)
 
             }
             catch (e: Exception){

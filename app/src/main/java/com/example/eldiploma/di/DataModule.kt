@@ -6,20 +6,25 @@ import com.example.eldiploma.data.local.dao.AttendanceDao
 import com.example.eldiploma.data.local.dao.MeetingDao
 import com.example.eldiploma.data.local.dao.StudentDao
 import com.example.eldiploma.data.local.dao.StudentGroupDao
+import com.example.eldiploma.data.local.dao.TeacherDao
 import com.example.eldiploma.data.local.repository.AttendanceRepositoryImpl
 import com.example.eldiploma.data.local.repository.MeetingRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentGroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentRepositoryImpl
+import com.example.eldiploma.data.local.repository.TeacherRepositoryImpl
 import com.example.eldiploma.data.network.ApiFactory
 import com.example.eldiploma.data.network.ApiService
 import com.example.eldiploma.data.network.repository.AttendanceNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.StudentNetworkRepositoryImpl
+import com.example.eldiploma.data.network.repository.TeacherNetworkRepositoryImpl
 import com.example.eldiploma.domain.local.repository.AttendanceRepository
 import com.example.eldiploma.domain.local.repository.MeetingRepository
 import com.example.eldiploma.domain.local.repository.StudentGroupRepository
 import com.example.eldiploma.domain.local.repository.StudentRepository
+import com.example.eldiploma.domain.local.repository.TeacherRepository
 import com.example.eldiploma.domain.network.repository.AttendanceNetworkRepository
 import com.example.eldiploma.domain.network.repository.StudentNetworkRepository
+import com.example.eldiploma.domain.network.repository.TeacherNetworkRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -50,6 +55,14 @@ interface DataModule {
     @ApplicationScope
     @Binds
     fun bindAttendanceNetworkRepository(impl: AttendanceNetworkRepositoryImpl) : AttendanceNetworkRepository
+
+    @ApplicationScope
+    @Binds
+    fun bindTeacherNetworkRepository(impl: TeacherNetworkRepositoryImpl) : TeacherNetworkRepository
+
+    @ApplicationScope
+    @Binds
+    fun bindTeacherRepository(impl: TeacherRepositoryImpl) : TeacherRepository
 
     companion object{
 
@@ -84,7 +97,13 @@ interface DataModule {
         @ApplicationScope
         @Provides
         fun provideMeetingDao(database: LocalDatabase): MeetingDao{
-            return database.metingDao()
+            return database.meetingDao()
+        }
+
+        @ApplicationScope
+        @Provides
+        fun provideTeacherDao(database: LocalDatabase): TeacherDao{
+            return database.teacherDao()
         }
     }
 }

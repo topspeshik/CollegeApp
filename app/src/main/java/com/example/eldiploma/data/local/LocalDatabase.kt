@@ -9,11 +9,13 @@ import com.example.eldiploma.data.local.dao.GroupDao
 import com.example.eldiploma.data.local.dao.MeetingDao
 import com.example.eldiploma.data.local.dao.StudentDao
 import com.example.eldiploma.data.local.dao.StudentGroupDao
+import com.example.eldiploma.data.local.dao.TeacherDao
 import com.example.eldiploma.data.local.model.AttendanceDbModel
 import com.example.eldiploma.data.local.model.GroupDbModel
 import com.example.eldiploma.data.local.model.MeetingDbModel
 import com.example.eldiploma.data.local.model.StudentDbModel
 import com.example.eldiploma.data.local.model.StudentGroupDbModel
+import com.example.eldiploma.data.local.model.TeacherDbModel
 
 @Database(
     entities = [
@@ -21,7 +23,8 @@ import com.example.eldiploma.data.local.model.StudentGroupDbModel
         GroupDbModel::class,
         MeetingDbModel::class,
         StudentDbModel::class,
-        StudentGroupDbModel::class
+        StudentGroupDbModel::class,
+        TeacherDbModel::class
                ],
     version = 1,
     exportSchema = false
@@ -37,7 +40,9 @@ abstract class LocalDatabase : RoomDatabase(){
 
     abstract fun attendanceDao(): AttendanceDao
 
-    abstract fun metingDao(): MeetingDao
+    abstract fun meetingDao(): MeetingDao
+
+    abstract fun teacherDao(): TeacherDao
 
     companion object {
 

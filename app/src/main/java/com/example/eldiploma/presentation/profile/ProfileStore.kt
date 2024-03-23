@@ -5,29 +5,35 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.example.eldiploma.domain.entity.Teacher
 import com.example.eldiploma.presentation.profile.ProfileStore.Intent
 import com.example.eldiploma.presentation.profile.ProfileStore.Label
 import com.example.eldiploma.presentation.profile.ProfileStore.State
+import javax.inject.Inject
 
-internal interface ProfileStore : Store<Intent, State, Label> {
+interface ProfileStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
     }
 
-    data class State(val todo: Unit)
+    data class State( val studentAttendance: Teacher)
 
     sealed interface Label {
     }
 }
 
-internal class ProfileStoreFactory(
+class ProfileStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory
 ) {
 
     fun create(): ProfileStore =
         object : ProfileStore, Store<Intent, State, Label> by storeFactory.create(
             name = "ProfileStore",
-            initialState = State(Unit),
+            initialState = State(Teacher("12",
+                firstName = null,
+                lastName = null,
+                phoneNumber = null
+            )),
             bootstrapper = BootstrapperImpl(),
             executorFactory = ::ExecutorImpl,
             reducer = ReducerImpl
@@ -53,6 +59,13 @@ internal class ProfileStoreFactory(
     }
 
     private object ReducerImpl : Reducer<State, Msg> {
-        override fun State.reduce(message: Msg): State = State(Unit)
+        override fun State.reduce(message: Msg): State = State(
+            Teacher(
+                id = "",
+                firstName = null,
+                lastName = null,
+                phoneNumber = null
+            )
+        )
     }
 }
