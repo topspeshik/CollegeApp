@@ -56,9 +56,6 @@ fun StudentsContent(component: StudentsComponent) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(14.dp,0.dp,14.dp,14.dp)
     ){
-//        stickyHeader {
-//            StudentHeader()
-//        }
         item{
             SearchCard { component.onClickSearch() }
         }

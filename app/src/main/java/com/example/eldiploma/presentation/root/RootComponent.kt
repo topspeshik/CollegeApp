@@ -11,6 +11,10 @@ interface RootComponent {
 
     val stack: Value<ChildStack<*, Child>>
 
+    fun onClickPages()
+
+    fun onClickProfile()
+
     sealed class Child {
         class Profile(val component: ProfileComponent) : Child()
         class Pages(val component: PagesClassbookComponent) : Child()

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
@@ -31,6 +32,14 @@ class DefaultRootComponent @AssistedInject constructor(
         handleBackButton = true,
         childFactory = ::child
     )
+
+    override fun onClickPages() {
+        navigation.bringToFront(Config.Classbook)
+    }
+
+    override fun onClickProfile() {
+        navigation.bringToFront(Config.Profile)
+    }
 
     private fun child(
         config: Config,
