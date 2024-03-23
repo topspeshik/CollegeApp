@@ -112,7 +112,6 @@ class AttendanceListStoreFactory @Inject  constructor(
                 is Intent.ClickChangeDate -> {
                     scope.launch {
                         getAttendanceWithMeetingUseCase(studentGroupId, intent.date).collect {
-                            Log.d("checkGroups", studentGroupId)
                             dispatch(Msg.AttendanceLoaded(it))
                             dispatch(Msg.DateChanged(intent.date))
                         }

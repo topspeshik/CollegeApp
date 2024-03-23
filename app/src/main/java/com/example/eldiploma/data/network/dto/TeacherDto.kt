@@ -14,4 +14,7 @@ data class TeacherDto (
 
     @SerializedName("phoneNumber")
     val phoneNumber: String?,
+
+    @SerializedName("emailAddress")
+    val emailAddress: String?,
 )

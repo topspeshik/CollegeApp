@@ -13,4 +13,7 @@ data class TeacherDbModel (
     val lastName: String?,
 
     val phoneNumber: String?,
+
+    val emailAddress: String?,
+
 )

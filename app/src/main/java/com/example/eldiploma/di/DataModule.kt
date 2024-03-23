@@ -3,11 +3,13 @@ package com.example.eldiploma.di
 import android.content.Context
 import com.example.eldiploma.data.local.LocalDatabase
 import com.example.eldiploma.data.local.dao.AttendanceDao
+import com.example.eldiploma.data.local.dao.GroupDao
 import com.example.eldiploma.data.local.dao.MeetingDao
 import com.example.eldiploma.data.local.dao.StudentDao
 import com.example.eldiploma.data.local.dao.StudentGroupDao
 import com.example.eldiploma.data.local.dao.TeacherDao
 import com.example.eldiploma.data.local.repository.AttendanceRepositoryImpl
+import com.example.eldiploma.data.local.repository.GroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.MeetingRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentGroupRepositoryImpl
 import com.example.eldiploma.data.local.repository.StudentRepositoryImpl
@@ -18,6 +20,7 @@ import com.example.eldiploma.data.network.repository.AttendanceNetworkRepository
 import com.example.eldiploma.data.network.repository.StudentNetworkRepositoryImpl
 import com.example.eldiploma.data.network.repository.TeacherNetworkRepositoryImpl
 import com.example.eldiploma.domain.local.repository.AttendanceRepository
+import com.example.eldiploma.domain.local.repository.GroupRepository
 import com.example.eldiploma.domain.local.repository.MeetingRepository
 import com.example.eldiploma.domain.local.repository.StudentGroupRepository
 import com.example.eldiploma.domain.local.repository.StudentRepository
@@ -64,6 +67,10 @@ interface DataModule {
     @Binds
     fun bindTeacherRepository(impl: TeacherRepositoryImpl) : TeacherRepository
 
+    @ApplicationScope
+    @Binds
+    fun bindGroupRepository(impl: GroupRepositoryImpl) : GroupRepository
+
     companion object{
 
         @ApplicationScope
@@ -104,6 +111,12 @@ interface DataModule {
         @Provides
         fun provideTeacherDao(database: LocalDatabase): TeacherDao{
             return database.teacherDao()
+        }
+
+        @ApplicationScope
+        @Provides
+        fun provideGroupDao(database: LocalDatabase): GroupDao{
+            return database.groupDao()
         }
     }
 }

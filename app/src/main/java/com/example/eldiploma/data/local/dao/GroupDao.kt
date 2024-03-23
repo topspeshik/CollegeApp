@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GroupDao {
     @Query("SELECT * FROM groups")
-    fun getGroups(): List<GroupDbModel>
+    fun getGroups(): Flow<List<GroupDbModel>>
 
     @Upsert
     suspend fun addGroups(groupDbModels: List<GroupDbModel>)

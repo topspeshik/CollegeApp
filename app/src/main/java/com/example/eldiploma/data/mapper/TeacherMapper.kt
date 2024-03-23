@@ -6,12 +6,12 @@ import com.example.eldiploma.domain.entity.Teacher
 fun Teacher.toDbModel() : TeacherDbModel = TeacherDbModel(id,
     firstName ,
     lastName ,
-    phoneNumber
+    phoneNumber, emailAddress
 )
 
 fun TeacherDbModel.toEntity() : Teacher =  Teacher(id,
     firstName ,
     lastName ,
-    phoneNumber)
+    phoneNumber, emailAddress)
 
 fun List<TeacherDbModel>.toEntities() : List<Teacher> = map{it.toEntity()}

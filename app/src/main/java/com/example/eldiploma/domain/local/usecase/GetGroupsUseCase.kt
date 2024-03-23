@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetGroupsUseCase @Inject constructor(
     private val repository: GroupRepository
 ) {
-    suspend operator fun invoke() = repository.getGroups()
+    operator fun invoke() = repository.getGroups()
 }

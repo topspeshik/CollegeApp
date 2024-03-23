@@ -8,4 +8,6 @@
     <string name="Classbook">Журнал</string>
     <string name="SearchGroups">Поиск групп</string>
     <string name="Attendance">Посещаемость</string>
+    <string name="Teacher">Учитель</string>
+    <string name="Avatar">Аватар</string>
 </resources>

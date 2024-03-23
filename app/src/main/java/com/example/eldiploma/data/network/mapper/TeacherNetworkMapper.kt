@@ -8,11 +8,11 @@ import com.example.eldiploma.domain.entity.Teacher
 fun Teacher.toDto() : TeacherDto = TeacherDto(id,
     firstName,
     lastName,
-    phoneNumber )
+    phoneNumber, emailAddress )
 
 fun TeacherDto.toEntity() : Teacher =  Teacher(id,
     firstName,
     lastName,
-    phoneNumber)
+    phoneNumber, emailAddress)
 
 fun List<TeacherDto>.toEntities() : List<Teacher> = map{it.toEntity()}

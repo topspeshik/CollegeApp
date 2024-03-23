@@ -8,4 +8,6 @@ data class Teacher(
     val lastName: String?,
 
     val phoneNumber: String?,
+
+    val emailAddress: String?,
 )
